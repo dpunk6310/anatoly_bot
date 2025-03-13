@@ -142,7 +142,28 @@ func main() {
 }
 
 func sendMediaGroup(bot *tgbotapi.BotAPI, group *MediaGroup) {
+	// Создаем медиагруппу
 	mediaGroup := tgbotapi.NewMediaGroup(targetChannelID, group.Media)
+
+	// Добавляем подпись к первому элементу медиагруппы
+	if len(mediaGroup.Media) > 0 {
+		// Проверяем тип первого элемента и добавляем подпись
+		switch firstMedia := mediaGroup.Media[0].(type) {
+		case tgbotapi.InputMediaPhoto:
+			firstMedia.Caption = group.Caption
+			mediaGroup.Media[0] = firstMedia
+		case tgbotapi.InputMediaVideo:
+			firstMedia.Caption = group.Caption
+			mediaGroup.Media[0] = firstMedia
+		case tgbotapi.InputMediaDocument:
+			firstMedia.Caption = group.Caption
+			mediaGroup.Media[0] = firstMedia
+		default:
+			log.Printf("Тип медиа не поддерживает подпись: %T", firstMedia)
+		}
+	}
+
+	// Отправляем медиагруппу
 	_, err := bot.SendMediaGroup(mediaGroup)
 	if err != nil {
 		log.Printf("Ошибка при отправке медиагруппы: %v", err)
