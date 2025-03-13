@@ -1,0 +1,16 @@
+venv
+env
+__pycache__/
+.vscode/
+.idea
+.env
+.envs/
+*.sqlite3
+.venv/
+.docker-volumes
+media/photos
+media/newsletter
+logs
+.env_web
+.env_letsencrypt
+*.log
